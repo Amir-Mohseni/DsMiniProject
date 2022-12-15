@@ -6,6 +6,7 @@ import Algorithms.array_optimization as array_optimization
 import Algorithms.sqrt_optimization as sqrt_optimization
 import Algorithms.sieve_optimization as sieve_optimization
 import Algorithms.naive_slow_algorithm as naive_slow_algorithm
+import Algorithms.sqrt_slow_algorithm as sqrt_slow_algorithm
 
 naive_time = []
 naive_num = []
@@ -19,13 +20,15 @@ sqrt_num = []
 sieve_time = []
 sieve_num = []
 
-
 naive_slow_time = []
 naive_slow_num = []
 
+sqrt_slow_time = []
+sqrt_slow_num = []
+
 data_stream = [("Algorithm", "N", "Time")]
 
-for program in [naive_algorithm, sieve_optimization, array_optimization, sqrt_optimization, naive_slow_algorithm]:
+for program in [naive_algorithm, sieve_optimization, array_optimization, sqrt_optimization, naive_slow_algorithm, sqrt_slow_algorithm]:
     for file_num in range(30):
         file_path = "./TestCases/in/input" + str(file_num + 1) + ".txt"
         with open(file_path, "r") as file:
@@ -86,12 +89,24 @@ for program in [naive_algorithm, sieve_optimization, array_optimization, sqrt_op
                     naive_slow_time.append(float(execution_time))
                     naive_slow_num.append(n)
                     data_stream.append(("Naive Slow", n, float(execution_time)))
+            elif program == sqrt_slow_algorithm:
+                result, execution_time = program.return_results(n)
+                if result == -1:
+                    sqrt_slow_time.append(10)
+                    sqrt_slow_num.append(n)
+                    data_stream.append(("Sqrt Slow", n, 10))
+                    break
+                else:
+                    sqrt_slow_time.append(float(execution_time))
+                    sqrt_slow_num.append(n)
+                    data_stream.append(("Sqrt Slow", n, float(execution_time)))
 
 plt.plot(naive_num, naive_time, label="Naive Algorithm")
 plt.plot(sqrt_num, sqrt_time, label="Sqrt Optimization")
 plt.plot(array_num, array_time, label="Array Optimization")
 plt.plot(sieve_num, sieve_time, label="Sieve Algorithm")
 plt.plot(naive_slow_num, naive_slow_time, label="Naive Slow Algorithm")
+plt.plot(sqrt_slow_num, sqrt_slow_time, label="Sqrt Slow Algorithm")
 
 plt.title("Finding prime numbers up to N Algorithm - Time Complexity")
 plt.xlabel('N')
